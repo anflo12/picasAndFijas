@@ -1,14 +1,17 @@
 let dict = {};
-sharenumber();
+
+
 
 
 function sendNumber(event) {
-  var _a;
+  let _a;
+console.log("number",randomNumber.toString().length)
+console.log("fijas",Object.keys(dict['fijas']).length)
   event.preventDefault();
   dict["picas"] = 0;
   dict["fijas"] = 0;
   let inputValue = (_a = document.getElementById("inputNumber")).value;
-  validateResult(inputValue, numberGame.toString());
+  validateResult(inputValue, randomNumber.toString());
 }
 
 function rangeNumber(option) {
@@ -48,7 +51,7 @@ function validateResult(inputValue, randomValue) {
       inputValue.indexOf(letter) == randomValue.indexOf(letter)
     ) {
       ++dict["fijas"];
-    }else if(Object.keys(dict['fijas']).length===numberGame.toString().length)
+    }else if(Object.keys(dict['fijas']).length===randomNumber.toString().length)
     console.log("ganastee")
     
   }

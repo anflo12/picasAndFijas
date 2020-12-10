@@ -93,3 +93,17 @@ input {
   align-items: center;
   justify-content:center;
 }
+
+@media only screen and (max-width:600px){
+  .d-game {
+    margin: 0px 0px 12px 12px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+   
+  }
+
+  .card{
+    width: 100%;
+  }
+}

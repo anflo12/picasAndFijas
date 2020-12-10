@@ -2,7 +2,6 @@ const socket = io("http://localhost:4000");
 
 let puntaje = document.getElementById("puntaje");
 let users = document.getElementById("users");
-
 let btnCreate = document.getElementById("btn-create");
 let btnJoin = document.getElementById("btn-join");
 let containerCreate = document.getElementById("create");
@@ -13,7 +12,7 @@ inputJoin.className = "input";
 inputJoin.placeholder = "Ingrese codigo de sala";
 let user;
 let status = 0;
-
+let randomNumber=0
 function create_UUID() {
   var dt = new Date().getTime();
   var uuid = "xxxxx".replace(/[xy]/g, function (c) {
@@ -28,11 +27,12 @@ btnJoin.addEventListener("click", () => {
   if (status === 1) {
     let inputJoinValue = inputJoin.value;
 
-    socket.emit("createRoom", inputJoinValue);
+    socket.emit("joinRoom", inputJoinValue);
 
     user = prompt("ingrese nombre de usuario");
     socket.emit("user", user);
 
+    getNumberGame()
   }
   if (status === 0) {
     containerCreate.replaceChild(inputJoin, btnCreate);
@@ -42,10 +42,10 @@ btnJoin.addEventListener("click", () => {
 
 btnCreate.addEventListener("click", () => {
   let roomID = create_UUID();
-  let randomNumber = rangeNumber("2");
+   randomNumber = rangeNumber("2");
 
   socket.emit("createRoom", roomID);
-  socket.emit("game", randomNumber);
+ 
 
   user = prompt("ingrese nombre de usuario");
   socket.on("room:code", (roomId) => {
@@ -53,6 +53,7 @@ btnCreate.addEventListener("click", () => {
     document.getElementById("btn-create").style.visibility = "hidden";
     document.getElementById("btn-join").style.visibility = "hidden";
   });
+  getNumberGame()
 });
 
 function sendRecord(Record) {
@@ -67,12 +68,15 @@ socket.on("join:user", (user) => {
   users.innerHTML += `<p> <strong>${user} se ha unido </strong></p> <br>`;
 });
 
-function sharenumber() {
-  socket.on("number:game", (number) => {
-   console.log("okii",number)
-  });
 
-}
+ function getNumberGame() {
+  socket.on("number:game", (number) => {
+    console.log("n",number)
+    randomNumber=  number
+   });
+ }
+
+
 socket.on("send:record", (data) => {
-  puntaje.innerHTML = `<p> <strong>${data.user} </strong>  picas: ${data.picas}  fijas: ${data.fijas}</p> <br>`;
+  puntaje.innerHTML += `<p> <strong>${data.user} </strong>  picas: ${data.picas}  fijas: ${data.fijas}</p> <br>`;
 });

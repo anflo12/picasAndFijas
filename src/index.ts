@@ -6,7 +6,7 @@ import store from "store";
 const app = express();
 
 app.use(express.static(path.join(__dirname, "public")));
-
+let countNumber:number =0
 let server = http.createServer(app);
 let numberRandom: number = 0;
 let io = SocketIO(server);
@@ -38,9 +38,9 @@ io.on("connection", (socket) => {
     roomname = room;
     let tempnumber: number = generateNumber(1, 10);
     store.set("number", tempnumber);
+    countNumber++
 
     socket.join(room);
-    
     socket.on("user", (user: string) => {
       console.log("user",user)
       io.sockets.to(roomname).emit("join:user", user);
@@ -48,22 +48,32 @@ io.on("connection", (socket) => {
 
     io.sockets.to(roomname).emit("room:code", roomname);
     io.sockets.to(roomname).emit("number:game", tempnumber);
+    io.sockets.to(room).emit("limitPlayers", {limit:countNumber})
+
 
   });
 
   // joinUser  funtcion
   socket.on("joinRoom", (room: string) => {
-    socket.join(room);
-    socket.on("user", (user: string) => {
-      console.log("user",user)
-      
-
-      io.sockets.to(room).emit("join:user", user);
-    });
-    numberRandom = store.get("number");
-    io.sockets.to(room).emit("number:game", numberRandom);
-
    
+      
+   socket.join(room);
+   countNumber++
+
+   socket.on("user", (user: string) => {
+     console.log("user",user)
+     console.log("count",countNumber)
+
+     io.sockets.to(room).emit("join:user", user);
+     io.sockets.to(room).emit("limitPlayers", {limit:countNumber})
+
+   });
+   numberRandom = store.get("number");
+   io.sockets.to(room).emit("number:game", numberRandom);
+   
+  
+  
+
     
   });
 });

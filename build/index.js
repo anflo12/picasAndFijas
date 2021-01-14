@@ -10,6 +10,7 @@ const http_1 = __importDefault(require("http"));
 const store_1 = __importDefault(require("store"));
 const app = express_1.default();
 app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
+let countNumber = 0;
 let server = http_1.default.createServer(app);
 let numberRandom = 0;
 let io = socket_io_1.default(server);
@@ -32,6 +33,7 @@ io.on("connection", (socket) => {
         roomname = room;
         let tempnumber = generateNumber(1, 10);
         store_1.default.set("number", tempnumber);
+        countNumber++;
         socket.join(room);
         socket.on("user", (user) => {
             console.log("user", user);
@@ -39,13 +41,17 @@ io.on("connection", (socket) => {
         });
         io.sockets.to(roomname).emit("room:code", roomname);
         io.sockets.to(roomname).emit("number:game", tempnumber);
+        io.sockets.to(room).emit("limitPlayers", { limit: countNumber });
     });
     // joinUser  funtcion
     socket.on("joinRoom", (room) => {
         socket.join(room);
+        countNumber++;
         socket.on("user", (user) => {
             console.log("user", user);
+            console.log("count", countNumber);
             io.sockets.to(room).emit("join:user", user);
+            io.sockets.to(room).emit("limitPlayers", { limit: countNumber });
         });
         numberRandom = store_1.default.get("number");
         io.sockets.to(room).emit("number:game", numberRandom);

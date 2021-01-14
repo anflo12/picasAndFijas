@@ -28,7 +28,7 @@
         <div class="card">
           <h3>Ingrese un numero</h3>
 
-          <form class="form" onsubmit="sendNumber(event)">
+          <form class="form" >
             <input
               type="number"
               class="input"
@@ -36,12 +36,15 @@
               autocomplete="off"
             />
 
-            <button type="submit" class="btnStyle">Comprobar Numero</button>
+            <button type="submit" id='btnValidete' class="btnStyle">Comprobar Numero</button>
           </form>
         </div>
 
-        <div id="puntaje" class="score"></div>
-        <div id="users" class="score"></div>
+        <div id="users" class="score">
+          <button id='btn-Start' 
+          type="button" class="btnStart">Iniciar juego</button>
+
+        </div>
 
       </div>
     </div>

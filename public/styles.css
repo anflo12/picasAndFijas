@@ -78,7 +78,14 @@ input {
   height: 30px;
   font-size: medium;
 }
-
+.btnStart {
+  background:  #ab3efa;
+  border-color: white;
+  border-radius: 5px;
+  width: 20vw;
+  height: 30px;
+  font-size: medium;
+}
 .d-game {
   margin: 0px 0px 12px 12px;
   display: flex;

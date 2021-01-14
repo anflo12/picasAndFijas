@@ -2,17 +2,20 @@ let dict = {};
 
 
 
-
-function sendNumber(event) {
-  let _a;
-console.log("number",randomNumber.toString().length)
-console.log("fijas",Object.keys(dict['fijas']).length)
+let btnVlidate = document.getElementById('btnValidete').addEventListener('click',(event)=>{
   event.preventDefault();
+
+  let _a;
+  let inputValue = (_a = document.getElementById("inputNumber")).value;
+
+console.log("randm",randomNumber)
+console.log("value",inputValue)
+
   dict["picas"] = 0;
   dict["fijas"] = 0;
-  let inputValue = (_a = document.getElementById("inputNumber")).value;
   validateResult(inputValue, randomNumber.toString());
-}
+})
+
 
 function rangeNumber(option) {
   let numberGenerate;
@@ -40,6 +43,7 @@ function generateNumber(rangeMax, rangeMin) {
 }
 
 function validateResult(inputValue, randomValue) {
+  console.log("valuenumber",randomValue)
   for (let letter of inputValue) {
     if (
       randomValue.includes(letter) &&
